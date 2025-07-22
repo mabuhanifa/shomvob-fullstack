@@ -1,14 +1,16 @@
+import { MapPin } from "lucide-react";
+
 export default function Header() {
   return (
-    <header className="flex justify-between items-center py-4">
+    <header className="flex justify-between items-center pb-2">
       <div className="flex items-center">
         <div className="w-8 h-8 bg-black rounded-full mr-2"></div>
         <h1 className="text-2xl font-bold">Jobseeker</h1>
       </div>
       <div className="hidden md:flex items-center space-x-8 font-semibold">
-        <a href="#" className="text-gray-600">
-          <i className="fas fa-map-marker-alt mr-1"></i> Felosa Drive, Los
-          Angeles
+        <a href="#" className="text-gray-600 flex">
+          <MapPin />
+          Felosa Drive, Los Angeles
         </a>
         <a href="#" className="text-gray-600">
           Find Job
