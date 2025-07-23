@@ -1,10 +1,32 @@
 "use client";
+import { useState } from "react";
+import api from "../lib/api";
 
 export default function LoginModal({ onClose, onLoginSuccess }) {
-  const handleLogin = (e) => {
+  const [email, setEmail] = useState("admin@example.com");
+  const [password, setPassword] = useState("123456");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    onLoginSuccess();
+    setLoading(true);
+    setError("");
+    try {
+      const { data } = await api.post("/users/login", { email, password });
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      onLoginSuccess();
+    } catch (err) {
+      setError(
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message
+      );
+    } finally {
+      setLoading(false);
+    }
   };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div
@@ -19,6 +41,11 @@ export default function LoginModal({ onClose, onLoginSuccess }) {
           &times;
         </button>
         <h2 className="text-xl font-bold mb-4">Admin Login</h2>
+        {error && (
+          <div className="bg-red-100 text-red-700 p-3 rounded mb-4">
+            {error}
+          </div>
+        )}
         <form onSubmit={handleLogin}>
           <div className="mb-4">
             <label
@@ -30,8 +57,9 @@ export default function LoginModal({ onClose, onLoginSuccess }) {
             <input
               type="email"
               id="email"
-              defaultValue="admin@example.com"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
               required
             />
           </div>
@@ -45,16 +73,18 @@ export default function LoginModal({ onClose, onLoginSuccess }) {
             <input
               type="password"
               id="password"
-              defaultValue="password"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
               required
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out"
+            disabled={loading}
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out disabled:bg-indigo-300"
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
       </div>

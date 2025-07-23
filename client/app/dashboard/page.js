@@ -1,60 +1,84 @@
 "use client";
 
 import CreateJobForm from "@/components/CreateJobForm";
-import DeleteModal from "@/components/DeleteModal";
+import DeleteConfirmationModal from "@/components/DeleteModal";
 import EditJobForm from "@/components/EditJobForm";
-import { jobs as initialJobs } from "@/components/JobLists";
+import api from "@/lib/api";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
-  const [jobs, setJobs] = useState(initialJobs);
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
 
-  const handleAddJob = (newJob) => {
-    setJobs((prevJobs) => [
-      ...prevJobs,
-      {
-        ...newJob,
-        id: prevJobs.length + 1,
-        detailsLink: `/jobs/${prevJobs.length + 1}`,
-      },
-    ]);
-    setShowCreateForm(false);
+  const fetchJobs = async () => {
+    try {
+      setLoading(true);
+      const { data } = await api.get("/jobs");
+      setJobs(data);
+    } catch (err) {
+      setError("Failed to load jobs.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchJobs();
+  }, []);
+
+  const handleAddJob = async (newJob) => {
+    try {
+      await api.post("/jobs", newJob);
+      setShowCreateForm(false);
+      fetchJobs();
+    } catch (err) {
+      alert("Failed to create job.");
+    }
   };
 
   const handleEditClick = (job) => {
-    console.log("Editing job:", job);
     setSelectedJob(job);
     setShowEditForm(true);
   };
 
-  const handleUpdateJob = (updatedJob) => {
-    setJobs((prevJobs) =>
-      prevJobs.map((job) => (job.id === updatedJob.id ? updatedJob : job))
-    );
-    setShowEditForm(false);
-    setSelectedJob(null);
+  const handleUpdateJob = async (updatedJob) => {
+    try {
+      await api.put(`/jobs/${updatedJob.id}`, updatedJob);
+      setShowEditForm(false);
+      setSelectedJob(null);
+      fetchJobs();
+    } catch (err) {
+      alert("Failed to update job.");
+    }
   };
 
   const handleDeleteClick = (job) => {
-    console.log("Deleting job:", job);
     setSelectedJob(job);
     setShowDeleteModal(true);
   };
 
-  const handleDeleteJob = () => {
+  const handleDeleteJob = async () => {
     if (selectedJob) {
-      setJobs((prevJobs) =>
-        prevJobs.filter((job) => job.id !== selectedJob.id)
-      );
-      setShowDeleteModal(false);
-      setSelectedJob(null);
+      try {
+        await api.delete(`/jobs/${selectedJob._id}`);
+        setShowDeleteModal(false);
+        setSelectedJob(null);
+        fetchJobs();
+      } catch (err) {
+        alert("Failed to delete job.");
+      }
     }
   };
+
+  if (loading)
+    return <div className="text-center p-8">Loading dashboard...</div>;
+  if (error) return <div className="text-center p-8 text-red-500">{error}</div>;
 
   return (
     <div className="container mx-auto p-8">
@@ -87,7 +111,7 @@ export default function DashboardPage() {
       )}
 
       {showDeleteModal && selectedJob && (
-        <DeleteModal
+        <DeleteConfirmationModal
           onConfirm={handleDeleteJob}
           onClose={() => {
             setShowDeleteModal(false);
@@ -130,7 +154,7 @@ export default function DashboardPage() {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {jobs.map((job) => (
-                <tr key={job.id}>
+                <tr key={job._id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {job.title}
                   </td>
@@ -143,10 +167,10 @@ export default function DashboardPage() {
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex items-center justify-end space-x-4">
                       <Link
-                        href={`/dashboard/applicants/${job.id}`}
+                        href={`/dashboard/applicants/${job._id}`}
                         className="text-green-600 hover:text-green-900"
                       >
-                        Applicants
+                        See Applicants
                       </Link>
                       <button
                         onClick={() => handleEditClick(job)}

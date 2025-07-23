@@ -1,23 +1,52 @@
 "use client";
 
-import { applicants as allApplicants } from "@/components/ApplicantLists";
-import { jobs } from "@/components/JobLists";
 import ResumeModal from "@/components/ResumeModal";
+import api from "@/lib/api";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function ApplicantsPage() {
   const { jobId } = useParams();
-  const job = jobs.find((j) => j.id === Number(jobId));
-  const applicants = allApplicants.filter((a) => a.jobId === Number(jobId));
+  const [job, setJob] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [showResumeModal, setShowResumeModal] = useState(false);
   const [selectedResumeUrl, setSelectedResumeUrl] = useState("");
+
+  useEffect(() => {
+    const fetchJobAndApplicants = async () => {
+      if (!jobId) return;
+      try {
+        setLoading(true);
+        const { data } = await api.get(`/jobs/${jobId}`);
+        setJob(data);
+      } catch (err) {
+        setError("Failed to load job details and applicants.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobAndApplicants();
+  }, [jobId]);
 
   const handleViewResume = (resumeUrl) => {
     setSelectedResumeUrl(resumeUrl);
     setShowResumeModal(true);
   };
+
+  if (loading) {
+    return <div className="container mx-auto p-8 text-center">Loading...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto p-8 text-center text-red-500">
+        {error}
+      </div>
+    );
+  }
 
   if (!job) {
     return (
@@ -32,6 +61,8 @@ export default function ApplicantsPage() {
       </div>
     );
   }
+
+  const applicants = job.applicants || [];
 
   return (
     <div className="container mx-auto p-8">
@@ -85,7 +116,7 @@ export default function ApplicantsPage() {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {applicants.map((applicant) => (
-                  <tr key={applicant.id}>
+                  <tr key={applicant._id}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {applicant.name}
                     </td>
@@ -94,7 +125,7 @@ export default function ApplicantsPage() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <button
-                        onClick={() => handleViewResume(applicant.resumeUrl)}
+                        onClick={() => handleViewResume(applicant.resume)}
                         className="text-indigo-600 hover:text-indigo-900"
                       >
                         View Resume

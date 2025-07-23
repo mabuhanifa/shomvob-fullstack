@@ -1,78 +1,112 @@
 "use client";
 import { useState } from "react";
+import api from "../lib/api";
 
-export default function JobApplyForm({ onSuccess, onClose }) {
-  const [form, setForm] = useState({ name: "", email: "", cv: "" });
-  const [submitted, setSubmitted] = useState(false);
+export default function JobApplyForm({ onClose, jobId }) {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    resume: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    if (onSuccess) onSuccess();
+    setLoading(true);
+    setError("");
+    setSuccess("");
+    try {
+      await api.post("/applications", { ...formData, jobId });
+      setSuccess("Application submitted successfully!");
+      setTimeout(() => {
+        onClose();
+      }, 2000);
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to submit application.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div>
-      {submitted ? (
-        <div className="text-center">
-          <h3 className="text-lg font-bold mb-2">Application Submitted!</h3>
-          <p className="mb-4 text-green-600">Thank you for applying.</p>
-          <button
-            className="bg-black text-white px-4 py-2 rounded-lg"
-            onClick={onClose}
-          >
-            Close
-          </button>
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Name</label>
-            <input
-              type="text"
-              name="name"
-              required
-              value={form.name}
-              onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Email</label>
-            <input
-              type="email"
-              name="email"
-              required
-              value={form.email}
-              onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              CV Link or Short Text
-            </label>
-            <input
-              type="text"
-              name="cv"
-              required
-              value={form.cv}
-              onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
-            />
-          </div>
-          <button
-            type="submit"
-            className="bg-black text-white px-4 py-2 rounded-lg w-full"
-          >
-            Submit
-          </button>
-        </form>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {error && (
+        <div className="text-red-500 bg-red-100 p-3 rounded">{error}</div>
       )}
-    </div>
+      {success && (
+        <div className="text-green-500 bg-green-100 p-3 rounded">{success}</div>
+      )}
+      <div>
+        <label
+          htmlFor="name"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Full Name
+        </label>
+        <input
+          type="text"
+          name="name"
+          id="name"
+          onChange={handleChange}
+          required
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+        />
+      </div>
+      <div>
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Email Address
+        </label>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          onChange={handleChange}
+          required
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+        />
+      </div>
+      <div>
+        <label
+          htmlFor="resume"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Resume Link
+        </label>
+        <input
+          type="text"
+          name="resume"
+          id="resume"
+          placeholder="https://example.com/resume.pdf"
+          onChange={handleChange}
+          required
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+        />
+      </div>
+      <div className="flex justify-end space-x-4">
+        <button
+          type="button"
+          onClick={onClose}
+          className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          disabled={loading}
+          className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:bg-indigo-300"
+        >
+          {loading ? "Submitting..." : "Submit Application"}
+        </button>
+      </div>
+    </form>
   );
 }

@@ -4,19 +4,13 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import JobApplyForm from "./JobApplyForm";
 
-export default function Job({
-  job: {
-    title = "Java Developer",
-    company = "Example Corp",
-    location = "Remote",
-    detailsLink = "#",
-    description = "Build cutting-edge web applications from start to finish, utilizing your expertise in both front-end and back-end technologies.",
-    id,
-    salary = "Negotiable",
-  },
-}) {
+export default function Job({ job }) {
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
+
+  if (!job) {
+    return null;
+  }
 
   return (
     <>
@@ -29,31 +23,31 @@ export default function Job({
             <Bookmark />
           </button>
         </div>
-        <h3 className="text-lg font-bold ">{title}</h3>
+        <h3 className="text-lg font-bold ">{job.title}</h3>
         <div className="text-sm text-gray-700 my-2">
-          <span className="font-semibold">{company}</span> &middot;{" "}
-          <span>{location}</span>
+          <span className="font-semibold">{job.company}</span> &middot;{" "}
+          <span>{job.location}</span>
         </div>
-        <p className="text-sm text-gray-600 flex-grow">{description}</p>
+        <p className="text-sm text-gray-600 flex-grow">{job.description}</p>
         <div className="flex justify-between space-x-2 mt-3.5">
           <div className="flex space-x-2">
             <span className="bg-white text-xs px-2 py-1 rounded-md border border-gray-200 shadow-sm">
-              Full Time
+              {job.jobType}
             </span>
             <span className="bg-white text-xs px-2 py-1 rounded-md border border-gray-200 shadow-sm">
-              Mid Level
+              {job.workType}
             </span>
           </div>
           <div>
             <span className="text-sm text-gray-800 font-semibold border rounded px-2 py-1 bg-gray-100">
-              Salary : {salary}
+              Salary : {job.salary || "Negotiable"}
             </span>
           </div>
         </div>
         <div className="flex space-x-4 mt-3.5">
           <button
             className="w-full border border-gray-400 text-gray-800 py-2 rounded-lg"
-            onClick={() => router.push(`/jobs/${id}`)}
+            onClick={() => router.push(`/jobs/${job._id}`)}
           >
             Details
           </button>
@@ -79,8 +73,8 @@ export default function Job({
             >
               <X />
             </button>
-            <h2 className="text-xl font-bold mb-4">Apply for Java Developer</h2>
-            <JobApplyForm onClose={() => setShowModal(false)} />
+            <h2 className="text-xl font-bold mb-4">Apply for {job.title}</h2>
+            <JobApplyForm onClose={() => setShowModal(false)} jobId={job._id} />
           </div>
         </div>
       )}

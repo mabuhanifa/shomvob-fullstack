@@ -1,17 +1,59 @@
 "use client";
 import JobApplyForm from "@/components/JobApplyForm";
-import { jobs } from "@/components/JobLists";
-import { MapPin, MoveLeft } from "lucide-react";
+import api from "@/lib/api";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function JobDetailsPage() {
   const { id } = useParams();
-  const job = jobs.find((j) => j.id === Number(id));
+  const [job, setJob] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [showApply, setShowApply] = useState(false);
 
-  if (!job) return <div className="p-8">Job not found.</div>;
+  useEffect(() => {
+    const fetchJobDetails = async () => {
+      if (!id) return;
+      try {
+        setLoading(true);
+        const { data } = await api.get(`/jobs/${id}`);
+        setJob(data);
+      } catch (err) {
+        setError("Failed to load job details.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobDetails();
+  }, [id]);
+
+  if (loading) {
+    return <div className="container mx-auto p-8 text-center">Loading...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto p-8 text-center text-red-500">
+        {error}
+      </div>
+    );
+  }
+
+  if (!job) {
+    return (
+      <div className="container mx-auto p-8 text-center">
+        <h1 className="text-2xl font-bold">Job not found</h1>
+        <Link
+          href="/"
+          className="text-indigo-600 hover:text-indigo-800 mt-4 inline-block"
+        >
+          Back to all jobs
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -21,7 +63,18 @@ export default function JobDetailsPage() {
             href="/"
             className="text-indigo-600 hover:text-indigo-800 transition duration-300 ease-in-out flex items-center"
           >
-            <MoveLeft className="mx-2" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 mr-2"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+                clipRule="evenodd"
+              />
+            </svg>
             Back to all jobs
           </Link>
         </div>
@@ -33,12 +86,26 @@ export default function JobDetailsPage() {
             <span className="font-semibold text-lg">{job.company}</span>
             <span className="text-gray-400 hidden sm:inline">&middot;</span>
             <span className="flex items-center">
-              <MapPin />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 mr-1 text-gray-400"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                  clipRule="evenodd"
+                />
+              </svg>
               {job.location}
             </span>
             <span className="text-gray-400 hidden sm:inline">&middot;</span>
-            <span className="text-gray-800 font-semibold text-sm border rounded px-2 py-1 bg-gray-100">
-              Salary: {job.salary}
+            <span className="bg-gray-100 text-xs px-2 py-1 rounded-md border border-gray-200 shadow-sm">
+              {job.jobType}
+            </span>
+            <span className="bg-gray-100 text-xs px-2 py-1 rounded-md border border-gray-200 shadow-sm">
+              {job.workType}
             </span>
           </div>
           <div className="border-t border-gray-200 my-6"></div>
@@ -68,7 +135,10 @@ export default function JobDetailsPage() {
                 &times;
               </button>
               <h2 className="text-xl font-bold mb-4">Apply for {job.title}</h2>
-              <JobApplyForm onClose={() => setShowApply(false)} />
+              <JobApplyForm
+                onClose={() => setShowApply(false)}
+                jobId={job._id}
+              />
             </div>
           </div>
         )}
