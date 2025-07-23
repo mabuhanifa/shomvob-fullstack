@@ -1,0 +1,51 @@
+export const applicants = [
+  {
+    id: 1,
+    jobId: 1,
+    name: "John Doe",
+    email: "john.doe@example.com",
+    resumeUrl: "#",
+  },
+  {
+    id: 2,
+    jobId: 1,
+    name: "Jane Smith",
+    email: "jane.smith@example.com",
+    resumeUrl: "#",
+  },
+  {
+    id: 3,
+    jobId: 2,
+    name: "Peter Jones",
+    email: "peter.jones@example.com",
+    resumeUrl: "#",
+  },
+  {
+    id: 4,
+    jobId: 2,
+    name: "Mary Johnson",
+    email: "mary.johnson@example.com",
+    resumeUrl: "#",
+  },
+  {
+    id: 5,
+    jobId: 3,
+    name: "David Williams",
+    email: "david.williams@example.com",
+    resumeUrl: "#",
+  },
+  {
+    id: 6,
+    jobId: 4,
+    name: "Susan Brown",
+    email: "susan.brown@example.com",
+    resumeUrl: "#",
+  },
+  {
+    id: 7,
+    jobId: 1,
+    name: "Michael Davis",
+    email: "michael.davis@example.com",
+    resumeUrl: "#",
+  },
+];

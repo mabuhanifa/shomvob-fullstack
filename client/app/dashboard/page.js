@@ -4,6 +4,7 @@ import CreateJobForm from "@/components/CreateJobForm";
 import DeleteModal from "@/components/DeleteModal";
 import EditJobForm from "@/components/EditJobForm";
 import { jobs as initialJobs } from "@/components/JobLists";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function DashboardPage() {
@@ -119,8 +120,11 @@ export default function DashboardPage() {
                 >
                   Location
                 </th>
-                <th scope="col" className="relative px-6 py-3">
-                  <span className="sr-only">Actions</span>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Actions
                 </th>
               </tr>
             </thead>
@@ -137,8 +141,13 @@ export default function DashboardPage() {
                     {job.location}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    {/* Removed relative and z-10 from this div to fix button clicking */}
                     <div className="flex items-center justify-end space-x-4">
+                      <Link
+                        href={`/dashboard/applicants/${job.id}`}
+                        className="text-green-600 hover:text-green-900"
+                      >
+                        Applicants
+                      </Link>
                       <button
                         onClick={() => handleEditClick(job)}
                         className="text-indigo-600 hover:text-indigo-900"
