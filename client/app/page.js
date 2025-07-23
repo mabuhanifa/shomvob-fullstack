@@ -1,8 +1,8 @@
 "use client";
 
-import Header from "./components/Header";
-import Main from "./components/Main";
-import SearchBar from "./components/SearchBar";
+import Header from "@/components/Header";
+import Main from "@/components/Main";
+import SearchBar from "@/components/SearchBar";
 
 export default function Home() {
   return (

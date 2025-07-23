@@ -1,10 +1,20 @@
+"use client";
 import { Bookmark, Github, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import JobApplyForm from "./JobApplyForm";
 
-export default function Job({ bg }) {
+export default function Job({
+  bg,
+  title = "Java Developer",
+  company = "Example Corp",
+  location = "Remote",
+  detailsLink = "#",
+  description = "Build cutting-edge web applications from start to finish, utilizing your expertise in both front-end and back-end technologies.",
+  id,
+}) {
   const [showModal, setShowModal] = useState(false);
-  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const router = useRouter();
 
   return (
     <>
@@ -19,11 +29,18 @@ export default function Job({ bg }) {
             <Bookmark />
           </button>
         </div>
-        <h3 className="text-lg font-bold mt-4">Java Developer</h3>
-        <p className="text-sm text-gray-600 mt-2 flex-grow">
-          Build cutting-edge web applications from start to finish, utilizing
-          your expertise in both front-end and back-end technologies.
-        </p>
+        <h3 className="text-lg font-bold mt-4">{title}</h3>
+        <div className="text-sm text-gray-700 mb-1">
+          <span className="font-semibold">{company}</span> &middot;{" "}
+          <span>{location}</span>
+        </div>
+        <button
+          className="text-blue-600 underline text-xs mb-2 text-left"
+          onClick={() => router.push(`/jobs/${id}`)}
+        >
+          View Details
+        </button>
+        <p className="text-sm text-gray-600 mt-2 flex-grow">{description}</p>
         <div className="flex space-x-2 mt-4">
           <span className="bg-white text-xs px-2 py-1 rounded-md border border-gray-100">
             Full Time
@@ -35,7 +52,7 @@ export default function Job({ bg }) {
         <div className="flex space-x-4 mt-6">
           <button
             className="w-full border border-gray-400 text-gray-800 py-2 rounded-lg"
-            onClick={() => setShowDetailsModal(true)}
+            onClick={() => router.push(`/jobs/${id}`)}
           >
             Details
           </button>
@@ -65,10 +82,6 @@ export default function Job({ bg }) {
             <JobApplyForm onClose={() => setShowModal(false)} />
           </div>
         </div>
-      )}
-
-      {showDetailsModal && (
-        <ShowDetailsModal setShowDetailsModal={setShowDetailsModal} />
       )}
     </>
   );
