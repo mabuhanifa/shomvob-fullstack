@@ -3,7 +3,7 @@ const { Schema, model } = require("mongoose");
 const ApplicationSchema = Schema(
   {
     jobId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Job",
       required: true,
     },
@@ -14,6 +14,7 @@ const ApplicationSchema = Schema(
     email: {
       type: String,
       required: true,
+      match: [/.+\@.+\..+/, "Please fill a valid email address"],
     },
     resume: {
       type: String,

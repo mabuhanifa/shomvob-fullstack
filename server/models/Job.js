@@ -15,9 +15,13 @@ const JobSchema = Schema(
       required: true,
     },
     salary: {
-      type: Number | String,
+      type: String,
     },
     description: {
+      type: String,
+      required: true,
+    },
+    fullDescription: {
       type: String,
       required: true,
     },
@@ -33,7 +37,7 @@ const JobSchema = Schema(
     },
     applicants: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Application",
       },
     ],
