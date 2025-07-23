@@ -1,3 +1,4 @@
+"use client";
 import JobLists from "./JobLists";
 
 export default function Main() {
