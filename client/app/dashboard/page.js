@@ -1,12 +1,17 @@
 "use client";
 
 import CreateJobForm from "@/components/CreateJobForm";
+import DeleteModal from "@/components/DeleteModal";
+import EditJobForm from "@/components/EditJobForm";
 import { jobs as initialJobs } from "@/components/JobLists";
 import { useState } from "react";
 
 export default function DashboardPage() {
   const [jobs, setJobs] = useState(initialJobs);
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedJob, setSelectedJob] = useState(null);
 
   const handleAddJob = (newJob) => {
     setJobs((prevJobs) => [
@@ -18,6 +23,36 @@ export default function DashboardPage() {
       },
     ]);
     setShowCreateForm(false);
+  };
+
+  const handleEditClick = (job) => {
+    console.log("Editing job:", job);
+    setSelectedJob(job);
+    setShowEditForm(true);
+  };
+
+  const handleUpdateJob = (updatedJob) => {
+    setJobs((prevJobs) =>
+      prevJobs.map((job) => (job.id === updatedJob.id ? updatedJob : job))
+    );
+    setShowEditForm(false);
+    setSelectedJob(null);
+  };
+
+  const handleDeleteClick = (job) => {
+    console.log("Deleting job:", job);
+    setSelectedJob(job);
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteJob = () => {
+    if (selectedJob) {
+      setJobs((prevJobs) =>
+        prevJobs.filter((job) => job.id !== selectedJob.id)
+      );
+      setShowDeleteModal(false);
+      setSelectedJob(null);
+    }
   };
 
   return (
@@ -36,6 +71,27 @@ export default function DashboardPage() {
         <CreateJobForm
           onAddJob={handleAddJob}
           onClose={() => setShowCreateForm(false)}
+        />
+      )}
+
+      {showEditForm && selectedJob && (
+        <EditJobForm
+          job={selectedJob}
+          onUpdateJob={handleUpdateJob}
+          onClose={() => {
+            setShowEditForm(false);
+            setSelectedJob(null);
+          }}
+        />
+      )}
+
+      {showDeleteModal && selectedJob && (
+        <DeleteModal
+          onConfirm={handleDeleteJob}
+          onClose={() => {
+            setShowDeleteModal(false);
+            setSelectedJob(null);
+          }}
         />
       )}
 
@@ -81,12 +137,21 @@ export default function DashboardPage() {
                     {job.location}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button className="text-indigo-600 hover:text-indigo-900 mr-4">
-                      Edit
-                    </button>
-                    <button className="text-red-600 hover:text-red-900">
-                      Delete
-                    </button>
+                    {/* Removed relative and z-10 from this div to fix button clicking */}
+                    <div className="flex items-center justify-end space-x-4">
+                      <button
+                        onClick={() => handleEditClick(job)}
+                        className="text-indigo-600 hover:text-indigo-900"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDeleteClick(job)}
+                        className="text-red-600 hover:text-red-900"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
