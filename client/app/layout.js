@@ -1,3 +1,5 @@
+import Header from "@/components/Header";
+import SearchBar from "@/components/SearchBar";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -19,8 +21,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} min-h-screen container mx-auto p-4 lg:p-8 bg-[#f5f3ef] rounded`}
+      >
+        <Header />
+        <SearchBar />
+        <main>{children}</main>
       </body>
     </html>
   );
