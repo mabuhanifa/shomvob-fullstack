@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+const { Schema, model } = require("mongoose");
 
-const ApplicationSchema = mongoose.Schema(
+const ApplicationSchema = Schema(
   {
     jobId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -25,4 +25,4 @@ const ApplicationSchema = mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Application", ApplicationSchema);
+module.exports = model("Application", ApplicationSchema);

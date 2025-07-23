@@ -5,13 +5,15 @@ import { useState } from "react";
 import JobApplyForm from "./JobApplyForm";
 
 export default function Job({
-  bg,
-  title = "Java Developer",
-  company = "Example Corp",
-  location = "Remote",
-  detailsLink = "#",
-  description = "Build cutting-edge web applications from start to finish, utilizing your expertise in both front-end and back-end technologies.",
-  id,
+  job: {
+    title = "Java Developer",
+    company = "Example Corp",
+    location = "Remote",
+    detailsLink = "#",
+    description = "Build cutting-edge web applications from start to finish, utilizing your expertise in both front-end and back-end technologies.",
+    id,
+    salary = "Negotiable",
+  },
 }) {
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
@@ -33,13 +35,20 @@ export default function Job({
           <span>{location}</span>
         </div>
         <p className="text-sm text-gray-600 flex-grow">{description}</p>
-        <div className="flex space-x-2 mt-3.5">
-          <span className="bg-white text-xs px-2 py-1 rounded-md border border-gray-200 shadow-sm">
-            Full Time
-          </span>
-          <span className="bg-white text-xs px-2 py-1 rounded-md border border-gray-200 shadow-sm">
-            Mid Level
-          </span>
+        <div className="flex justify-between space-x-2 mt-3.5">
+          <div className="flex space-x-2">
+            <span className="bg-white text-xs px-2 py-1 rounded-md border border-gray-200 shadow-sm">
+              Full Time
+            </span>
+            <span className="bg-white text-xs px-2 py-1 rounded-md border border-gray-200 shadow-sm">
+              Mid Level
+            </span>
+          </div>
+          <div>
+            <span className="text-sm text-gray-800 font-semibold border rounded px-2 py-1 bg-gray-100">
+              Salary : {salary}
+            </span>
+          </div>
         </div>
         <div className="flex space-x-4 mt-3.5">
           <button

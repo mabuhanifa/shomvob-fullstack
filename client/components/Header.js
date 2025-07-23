@@ -1,12 +1,12 @@
 "use client";
-import { usePathname, useRouter } from "next/navigation"; // 1. Import usePathname
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import LoginModal from "./LoginModal";
 
 export default function Header() {
   const [showLogin, setShowLogin] = useState(false);
   const router = useRouter();
-  const pathname = usePathname(); // 2. Get the current path
+  const pathname = usePathname();
 
   const handleLoginSuccess = () => {
     setShowLogin(false);
@@ -20,9 +20,8 @@ export default function Header() {
             Jobseeker
           </h1>
         </div>
-        {/* 3. Conditionally render the button */}
         <div className="hidden md:flex items-center space-x-8 font-semibold">
-          {pathname === "/dashboard" ? (
+          {pathname.includes("dashboard") ? (
             <button
               className="border rounded-lg px-6 py-2 bg-white shadow-lg"
               onClick={() => router.push("/")}

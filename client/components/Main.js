@@ -45,7 +45,6 @@ export default function Main() {
               </label>
             </div>
           </div>
-
           <div>
             <h3 className="font-semibold mb-2">Work Type</h3>
             <div className="space-y-2">

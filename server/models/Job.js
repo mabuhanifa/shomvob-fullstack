@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+const { Schema, model } = require("mongoose");
 
-const JobSchema = mongoose.Schema(
+const JobSchema = Schema(
   {
     title: {
       type: String,
@@ -13,6 +13,9 @@ const JobSchema = mongoose.Schema(
     location: {
       type: String,
       required: true,
+    },
+    salary: {
+      type: Number | String,
     },
     description: {
       type: String,
@@ -28,10 +31,16 @@ const JobSchema = mongoose.Schema(
       enum: ["Remote", "On-site", "Hybrid"],
       required: true,
     },
+    applicants: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Application",
+      },
+    ],
   },
   {
     timestamps: true,
   }
 );
 
-module.exports = mongoose.model("Job", JobSchema);
+module.exports = model("Job", JobSchema);
