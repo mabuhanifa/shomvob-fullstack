@@ -11,12 +11,13 @@ export default function EditJobForm({ job, onUpdateJob, onClose }) {
     fullDescription: "",
     jobType: "Full-time",
     workType: "Remote",
+    salary: "",
   });
 
   useEffect(() => {
     if (job) {
       setFormData({
-        id: job.id,
+        _id: job._id,
         title: job.title || "",
         company: job.company || "",
         location: job.location || "",
@@ -24,7 +25,7 @@ export default function EditJobForm({ job, onUpdateJob, onClose }) {
         fullDescription: job.fullDescription || "",
         jobType: job.jobType || "Full-time",
         workType: job.workType || "Remote",
-        detailsLink: job.detailsLink,
+        salary: job.salary || "",
       });
     }
   }, [job]);
@@ -102,6 +103,23 @@ export default function EditJobForm({ job, onUpdateJob, onClose }) {
               value={formData.location}
               onChange={handleChange}
               required
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="salary"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Salary
+            </label>
+            <input
+              type="text"
+              name="salary"
+              id="salary"
+              value={formData.salary}
+              onChange={handleChange}
+              placeholder="e.g., 50,000 BDT or Negotiable"
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>

@@ -49,7 +49,7 @@ export default function DashboardPage() {
 
   const handleUpdateJob = async (updatedJob) => {
     try {
-      await api.put(`/jobs/${updatedJob.id}`, updatedJob);
+      await api.put(`/jobs/${updatedJob._id}`, updatedJob);
       setShowEditForm(false);
       setSelectedJob(null);
       fetchJobs();

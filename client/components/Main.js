@@ -78,9 +78,7 @@ export default function Main() {
 
       <main className="w-full md:w-5/6">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">
-            Java Developer Search Result (1143)
-          </h2>
+          <h2 className="text-xl font-bold">All Jobs (1143)</h2>
           <div className="flex items-center">
             <span className="text-gray-600 mr-2">Sort by:</span>
             <select className="rounded-lg border-gray-300">

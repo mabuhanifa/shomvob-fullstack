@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-screen container mx-auto p-4 lg:p-8 bg-[#f5f3ef] rounded`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-screen container mx-auto px-4 lg:px-8 lg:py-4 bg-[#f5f3ef] rounded`}
       >
         <Header />
         <SearchBar />
