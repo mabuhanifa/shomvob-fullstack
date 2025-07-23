@@ -2,13 +2,22 @@
 
 import { applicants as allApplicants } from "@/components/ApplicantLists";
 import { jobs } from "@/components/JobLists";
+import ResumeModal from "@/components/ResumeModal";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { useState } from "react";
 
 export default function ApplicantsPage() {
   const { jobId } = useParams();
   const job = jobs.find((j) => j.id === Number(jobId));
   const applicants = allApplicants.filter((a) => a.jobId === Number(jobId));
+  const [showResumeModal, setShowResumeModal] = useState(false);
+  const [selectedResumeUrl, setSelectedResumeUrl] = useState("");
+
+  const handleViewResume = (resumeUrl) => {
+    setSelectedResumeUrl(resumeUrl);
+    setShowResumeModal(true);
+  };
 
   if (!job) {
     return (
@@ -84,14 +93,12 @@ export default function ApplicantsPage() {
                       {applicant.email}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <a
-                        href={applicant.resumeUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <button
+                        onClick={() => handleViewResume(applicant.resumeUrl)}
                         className="text-indigo-600 hover:text-indigo-900"
                       >
                         View Resume
-                      </a>
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -104,6 +111,12 @@ export default function ApplicantsPage() {
           </p>
         )}
       </div>
+      {showResumeModal && (
+        <ResumeModal
+          resumeUrl={selectedResumeUrl}
+          onClose={() => setShowResumeModal(false)}
+        />
+      )}
     </div>
   );
 }
