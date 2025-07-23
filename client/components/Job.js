@@ -18,9 +18,7 @@ export default function Job({
 
   return (
     <>
-      <div
-        className={`${bg} p-6 rounded-lg shadow-md flex flex-col justify-between`}
-      >
+      <div className="border bg-gray-50 p-5 rounded-lg shadow-md flex flex-col justify-between">
         <div className="flex justify-between items-start">
           <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
             <Github />
@@ -29,27 +27,21 @@ export default function Job({
             <Bookmark />
           </button>
         </div>
-        <h3 className="text-lg font-bold mt-4">{title}</h3>
-        <div className="text-sm text-gray-700 mb-1">
+        <h3 className="text-lg font-bold ">{title}</h3>
+        <div className="text-sm text-gray-700 my-2">
           <span className="font-semibold">{company}</span> &middot;{" "}
           <span>{location}</span>
         </div>
-        <button
-          className="text-blue-600 underline text-xs mb-2 text-left"
-          onClick={() => router.push(`/jobs/${id}`)}
-        >
-          View Details
-        </button>
-        <p className="text-sm text-gray-600 mt-2 flex-grow">{description}</p>
-        <div className="flex space-x-2 mt-4">
-          <span className="bg-white text-xs px-2 py-1 rounded-md border border-gray-100">
+        <p className="text-sm text-gray-600 flex-grow">{description}</p>
+        <div className="flex space-x-2 mt-3.5">
+          <span className="bg-white text-xs px-2 py-1 rounded-md border border-gray-200 shadow-sm">
             Full Time
           </span>
-          <span className="bg-white text-xs px-2 py-1 rounded-md border border-gray-100">
+          <span className="bg-white text-xs px-2 py-1 rounded-md border border-gray-200 shadow-sm">
             Mid Level
           </span>
         </div>
-        <div className="flex space-x-4 mt-6">
+        <div className="flex space-x-4 mt-3.5">
           <button
             className="w-full border border-gray-400 text-gray-800 py-2 rounded-lg"
             onClick={() => router.push(`/jobs/${id}`)}
@@ -60,7 +52,7 @@ export default function Job({
             className="w-full bg-black text-white py-2 rounded-lg"
             onClick={() => setShowModal(true)}
           >
-            Apply Now
+            Quick Apply
           </button>
         </div>
       </div>

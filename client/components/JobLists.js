@@ -1,3 +1,4 @@
+"use client";
 import Job from "./Job";
 
 export const jobs = [
@@ -11,7 +12,6 @@ export const jobs = [
       "Build cutting-edge web applications from start to finish, utilizing your expertise in both front-end and back-end technologies.",
     fullDescription:
       "Full description for Java Developer. You will build cutting-edge web applications from start to finish, utilizing your expertise in both front-end and back-end technologies. You will work with a dynamic team, contribute to architecture decisions, and deliver robust solutions for our clients.",
-    bg: "bg-blue-100",
   },
   {
     id: 2,
@@ -23,7 +23,6 @@ export const jobs = [
       "Develop modern, responsive user interfaces using React and TypeScript.",
     fullDescription:
       "Full description for Frontend Engineer. You will develop modern, responsive user interfaces using React and TypeScript. Collaborate with UX/UI designers to implement design systems and ensure a seamless user experience across all platforms.",
-    bg: "bg-green-100",
   },
   {
     id: 3,
@@ -34,7 +33,6 @@ export const jobs = [
     description: "Design and implement scalable backend services and APIs.",
     fullDescription:
       "Full description for Backend Developer. You will design and implement scalable backend services and APIs. Work with the front-end team to integrate user-facing elements with server-side logic, and manage database systems and data storage solutions.",
-    bg: "bg-yellow-50",
   },
   {
     id: 4,
@@ -46,7 +44,6 @@ export const jobs = [
       "Automate deployment pipelines and manage cloud infrastructure.",
     fullDescription:
       "Full description for DevOps Engineer. You will automate deployment pipelines and manage cloud infrastructure. Collaborate with development teams to ensure seamless integration and delivery of applications, and monitor system performance and reliability.",
-    bg: "bg-red-100",
   },
   {
     id: 5,
@@ -57,7 +54,6 @@ export const jobs = [
     description: "Create cross-platform mobile applications using Flutter.",
     fullDescription:
       "Full description for Mobile App Developer. You will create cross-platform mobile applications using Flutter. Work closely with product managers and designers to deliver high-quality mobile apps that provide excellent user experiences.",
-    bg: "bg-purple-100",
   },
   {
     id: 6,
@@ -68,17 +64,15 @@ export const jobs = [
     description: "Ensure product quality through automated and manual testing.",
     fullDescription:
       "Full description for QA Engineer. You will ensure product quality through automated and manual testing. Develop and maintain test plans, test cases, and test scripts, and collaborate with development teams to resolve defects and improve product quality.",
-    bg: "bg-pink-100",
   },
 ];
 
 export default function JobLists() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-      {jobs.map((job) => (
+      {jobs.map((job, index) => (
         <Job
           key={job.id}
-          bg={job.bg}
           title={job.title}
           company={job.company}
           location={job.location}
