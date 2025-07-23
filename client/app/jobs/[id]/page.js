@@ -107,11 +107,22 @@ export default function JobDetailsPage() {
             <span className="bg-gray-100 text-xs px-2 py-1 rounded-md border border-gray-200 shadow-sm">
               {job.workType}
             </span>
+            <div>
+              <span className="text-sm text-gray-800 font-semibold border rounded px-2 py-1 bg-gray-100">
+                Salary : {job.salary || "Negotiable"}
+              </span>
+            </div>
           </div>
           <div className="border-t border-gray-200 my-6"></div>
+
+          <div className="prose max-w-none text-gray-700 mb-10">
+            <p>{job.description}</p>
+          </div>
+
           <div className="prose max-w-none text-gray-700">
             <p>{job.fullDescription}</p>
           </div>
+
           <div className="mt-8">
             <button
               className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 py-3 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 shadow-md"

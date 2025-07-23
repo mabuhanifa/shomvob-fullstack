@@ -4,7 +4,7 @@ import JobLists from "./JobLists";
 export default function Main() {
   return (
     <div className="flex flex-col md:flex-row gap-8">
-      <aside className="w-full md:w-1/4">
+      <aside className="w-full md:w-1/6">
         <h2 className="text-2xl font-bold mb-4">Filters</h2>
 
         <div className="space-y-6">
@@ -76,7 +76,7 @@ export default function Main() {
         </div>
       </aside>
 
-      <main className="w-full md:w-3/4">
+      <main className="w-full md:w-5/6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">
             Java Developer Search Result (1143)
