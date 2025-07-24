@@ -33,7 +33,7 @@ export default function Header() {
               className="border rounded-lg px-6 py-2 bg-white shadow-lg"
               onClick={() => setShowLogin(true)}
             >
-              Post a Job
+              Manage Jobs
             </button>
           )}
         </div>

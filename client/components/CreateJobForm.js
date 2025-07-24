@@ -11,6 +11,7 @@ export default function CreateJobForm({ onAddJob, onClose }) {
     fullDescription: "",
     jobType: "Full-time",
     workType: "Remote",
+    salary: "",
   });
 
   const handleChange = (e) => {
@@ -86,6 +87,22 @@ export default function CreateJobForm({ onAddJob, onClose }) {
               value={formData.location}
               onChange={handleChange}
               required
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="salary"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Salary
+            </label>
+            <input
+              type="text"
+              name="salary"
+              id="salary"
+              value={formData.salary}
+              onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>

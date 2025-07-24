@@ -1,27 +1,27 @@
 "use client";
 import { useState } from "react";
+import { Toaster, toast } from "react-hot-toast";
 import api from "../lib/api";
 
 export default function LoginModal({ onClose, onLoginSuccess }) {
   const [email, setEmail] = useState("admin@example.com");
   const [password, setPassword] = useState("123456");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
     try {
       const { data } = await api.post("/users/login", { email, password });
       localStorage.setItem("userInfo", JSON.stringify(data));
+      toast.success("Logged in successfully!");
       onLoginSuccess();
     } catch (err) {
-      setError(
+      const message =
         err.response && err.response.data.message
           ? err.response.data.message
-          : err.message
-      );
+          : err.message;
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -29,6 +29,7 @@ export default function LoginModal({ onClose, onLoginSuccess }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <Toaster position="top-center" reverseOrder={false} />
       <div
         className="absolute inset-0 bg-black bg-opacity-40 backdrop-blur-sm"
         onClick={onClose}
@@ -41,11 +42,6 @@ export default function LoginModal({ onClose, onLoginSuccess }) {
           &times;
         </button>
         <h2 className="text-xl font-bold mb-4">Admin Login</h2>
-        {error && (
-          <div className="bg-red-100 text-red-700 p-3 rounded mb-4">
-            {error}
-          </div>
-        )}
         <form onSubmit={handleLogin}>
           <div className="mb-4">
             <label

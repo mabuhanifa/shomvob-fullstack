@@ -41,9 +41,13 @@ export default function Job({ job }) {
           <div>
             <span className="text-sm text-gray-800 font-semibold border rounded px-2 py-1 bg-gray-100">
               Salary :{" "}
-              {(job.salary && job.salary.split("-")[1].split(" ")[1]) ||
-                "Negotiable"}{" "}
-              ৳
+              {job.salary
+                ? `${
+                    job.salary.includes("-")
+                      ? job.salary.split("-")[1].trim()
+                      : job.salary
+                  } ৳`
+                : "Negotiable"}
             </span>
           </div>
         </div>

@@ -83,7 +83,7 @@ export default function JobDetailsPage() {
             {job.title}
           </h1>
           <div className="text-gray-600 mb-6 flex flex-wrap items-center gap-x-4 gap-y-2">
-            <span className="font-semibold text-lg">{job.company}</span>
+            <span className="font-semibold">{job.company}</span>
             <span className="text-gray-400 hidden sm:inline">&middot;</span>
             <span className="flex items-center">
               <svg
@@ -100,22 +100,18 @@ export default function JobDetailsPage() {
               </svg>
               {job.location}
             </span>
-            <span className="text-gray-400 hidden sm:inline">&middot;</span>
-            <span className="bg-gray-100 text-xs px-2 py-1 rounded-md border border-gray-200 shadow-sm">
+            <span className="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded-md">
               {job.jobType}
             </span>
-            <span className="bg-gray-100 text-xs px-2 py-1 rounded-md border border-gray-200 shadow-sm">
+            <span className="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded-md">
               {job.workType}
             </span>
-            <div>
-              <span className="text-sm text-gray-800 font-semibold border rounded px-2 py-1 bg-gray-100">
-                Salary : {job.salary || "Negotiable"}
-              </span>
-            </div>
+            <span className="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded-md">
+              Salary: {job.salary || "Negotiable"}
+            </span>
           </div>
-          <div className="border-t border-gray-200 my-6"></div>
 
-          <div className="prose max-w-none text-gray-700 mb-10">
+          <div className="prose max-w-none text-gray-700 mb-8">
             <p>{job.description}</p>
           </div>
 

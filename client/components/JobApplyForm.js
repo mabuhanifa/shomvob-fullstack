@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { Toaster, toast } from "react-hot-toast";
 import api from "../lib/api";
 
 export default function JobApplyForm({ onClose, jobId }) {
@@ -9,8 +10,6 @@ export default function JobApplyForm({ onClose, jobId }) {
     resume: "",
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -19,16 +18,16 @@ export default function JobApplyForm({ onClose, jobId }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
-    setSuccess("");
     try {
       await api.post("/applications", { ...formData, jobId });
-      setSuccess("Application submitted successfully!");
+      toast.success("Application submitted successfully!");
       setTimeout(() => {
         onClose();
       }, 2000);
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to submit application.");
+      toast.error(
+        err.response?.data?.message || "Failed to submit application."
+      );
     } finally {
       setLoading(false);
     }
@@ -36,12 +35,7 @@ export default function JobApplyForm({ onClose, jobId }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {error && (
-        <div className="text-red-500 bg-red-100 p-3 rounded">{error}</div>
-      )}
-      {success && (
-        <div className="text-green-500 bg-green-100 p-3 rounded">{success}</div>
-      )}
+      <Toaster position="top-center" reverseOrder={false} />
       <div>
         <label
           htmlFor="name"
