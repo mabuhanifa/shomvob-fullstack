@@ -45,15 +45,11 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 ## Environment Variables
 
-Create a `.env` file in the root of the `server` directory with the following variables.
+Create a `.env` file in the root of the `server` directory with the following variables for running the application locally with `npm`.
 
 ```properties
-# MongoDB connection string
-# For local MongoDB instance without Docker
-# MONGO_URI='mongodb://localhost:27017/shomvob'
-
-# For Docker Compose setup (connecting from local machine)
-MONGO_URI='mongodb://root:password@localhost:27017/shomvob?authSource=admin'
+# MongoDB connection string for local development
+MONGO_URI='mongodb://localhost:27017/shomvob'
 
 # Node environment
 NODE_ENV=development
@@ -65,7 +61,7 @@ PORT=5000
 JWT_SECRET=some_super_secret_key_for_jwt_12345
 ```
 
-**Note:** When running the server inside a Docker container managed by Docker Compose, the application container will connect to MongoDB using the service name `mongodb` as the host. If you were to provide an `.env` file to the container, the `MONGO_URI` would be `mongodb://root:password@mongodb:27017/shomvob?authSource=admin`.
+**Note:** When running with Docker Compose, environment variables are set directly in the `docker-compose.yml` file for the `app` service.
 
 ## Usage
 
@@ -107,13 +103,21 @@ This is the recommended way to run the application for a consistent development 
     docker-compose up -d
     ```
 
-    This command will start the Node.js server, a MongoDB instance, and Mongo Express.
+    This command will start the Node.js server and a MongoDB instance.
 
     - **API Server**: `http://localhost:5000`
     - **MongoDB**: `mongodb://localhost:27017`
-    - **Mongo Express**: `http://localhost:8081` (Web-based MongoDB admin interface)
 
-3.  **To stop the services**
+3.  **To view logs**
+    If you are running the services in detached mode, you can view the logs for a specific service:
+
+    ```sh
+    docker-compose logs -f app
+    ```
+
+    Replace `app` with the service name you want to inspect (e.g., `mongo`).
+
+4.  **To stop the services**
     ```sh
     docker-compose down
     ```
@@ -143,13 +147,13 @@ Ensure the containers are running (`docker-compose up -d`).
 To import data into the Docker container's database:
 
 ```sh
-docker-compose exec api-server node seeder
+docker-compose exec app node seeder
 ```
 
 To destroy data in the Docker container's database:
 
 ```sh
-docker-compose exec api-server node seeder -d
+docker-compose exec app node seeder -d
 ```
 
 ## API Endpoints
@@ -196,6 +200,11 @@ The application uses Mongoose to model the data. Here are the main schemas:
   - `password`: String, required
   - `isAdmin`: Boolean, default `false`
 
+- **Application**: Represents a job application.
+  - `jobId`: ObjectID, ref 'Job', required
+  - `name`: String, required
+  - `email`: String, required
+  - `resume`: String, required (link to resume)
 - **Application**: Represents a job application.
   - `jobId`: ObjectID, ref 'Job', required
   - `name`: String, required

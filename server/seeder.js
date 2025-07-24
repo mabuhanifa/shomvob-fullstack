@@ -26,7 +26,6 @@ const importData = async () => {
     const createdJobs = await Job.insertMany(jobs);
     console.log("Jobs Imported!".green.inverse);
 
-    // Assign applications to jobs randomly
     const sampleApplications = applicationsData.map((app) => {
       const randomJobIndex = Math.floor(Math.random() * createdJobs.length);
       return {
@@ -40,7 +39,6 @@ const importData = async () => {
     );
     console.log("Applications Imported!".green.inverse);
 
-    // Link applications back to jobs
     for (const app of createdApplications) {
       await Job.findByIdAndUpdate(app.jobId, {
         $push: { applicants: app._id },
