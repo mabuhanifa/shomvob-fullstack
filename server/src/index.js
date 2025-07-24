@@ -9,7 +9,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://shomvob-fullstack.vercel.app/"],
+    origin: ["http://localhost:3000", "https://shomvob-fullstack.vercel.app"],
   })
 );
 app.use(express.json());
