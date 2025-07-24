@@ -33,6 +33,14 @@ export default function JobLists() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+      {jobs.length === 0 && (
+        <div className="col-span-1 lg:col-span-2 xl:col-span-3 text-center p-8">
+          <h2 className="text-xl font-bold">No Jobs Available</h2>
+          <p className="text-gray-600">
+            Check back later for new job postings.
+          </p>
+        </div>
+      )}
       {jobs.map((job) => (
         <Job key={job._id} job={job} />
       ))}
