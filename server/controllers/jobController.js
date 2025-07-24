@@ -95,7 +95,7 @@ const updateJob = async (req, res) => {
       job.fullDescription = fullDescription || job.fullDescription;
       job.jobType = jobType || job.jobType;
       job.workType = workType || job.workType;
-      job.salary = salary; // Allow clearing salary
+      job.salary = salary;
 
       const updatedJob = await job.save();
       res.json(updatedJob);
