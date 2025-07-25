@@ -67,7 +67,6 @@ const deleteApplication = async (req, res) => {
     const application = await Application.findById(req.params.id);
 
     if (application) {
-      // Also remove from job's applicants array
       await Job.updateOne(
         { _id: application.jobId },
         { $pull: { applicants: application._id } }
