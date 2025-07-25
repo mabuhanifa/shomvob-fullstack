@@ -19,6 +19,7 @@ const PORT = process.env.PORT || 5000;
 const jobRoutes = require("../routes/jobRoutes");
 const applicationRoutes = require("../routes/applicationRoutes");
 const userRoutes = require("../routes/userRoutes");
+const authRoutes = require("../routes/authRoutes");
 
 app.get("/", (req, res) => {
   res.send("Job Board API is running");
@@ -27,6 +28,7 @@ app.get("/", (req, res) => {
 app.use("/api/jobs", jobRoutes);
 app.use("/api/applications", applicationRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/auth", authRoutes);
 
 const { notFound, errorHandler } = require("../middleware/errorMiddleware");
 

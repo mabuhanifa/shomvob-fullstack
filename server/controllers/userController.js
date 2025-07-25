@@ -14,7 +14,7 @@ const authUser = async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      isAdmin: user.isAdmin,
+      role: user.isAdmin ? "admin" : "user",
       token: generateToken(user._id),
     });
   } else {
@@ -22,4 +22,22 @@ const authUser = async (req, res) => {
   }
 };
 
-module.exports = { authUser };
+// @desc    Get user profile
+// @route   GET /api/auth/me
+// @access  Private
+const getUserProfile = async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  if (user) {
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.isAdmin ? "admin" : "user",
+    });
+  } else {
+    res.status(404).json({ message: "User not found" });
+  }
+};
+
+module.exports = { authUser, getUserProfile };

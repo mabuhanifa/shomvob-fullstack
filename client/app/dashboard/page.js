@@ -5,6 +5,7 @@ import DeleteConfirmationModal from "@/components/DeleteModal";
 import EditJobForm from "@/components/EditJobForm";
 import api from "@/lib/api";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 
@@ -16,6 +17,26 @@ export default function DashboardPage() {
   const [showEditForm, setShowEditForm] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const { data: user } = await api.get("/auth/me");
+        if (user && user.role === "admin") {
+          setIsAuthorized(true);
+        } else {
+          toast.error("Access Denied. Admins only.");
+          router.push("/");
+        }
+      } catch (err) {
+        toast.error("You need to be logged in to view this page.");
+        router.push("/");
+      }
+    };
+    checkAuth();
+  }, [router]);
 
   const fetchJobs = async () => {
     try {
@@ -31,8 +52,10 @@ export default function DashboardPage() {
   };
 
   useEffect(() => {
-    fetchJobs();
-  }, []);
+    if (isAuthorized) {
+      fetchJobs();
+    }
+  }, [isAuthorized]);
 
   const handleAddJob = async (newJob) => {
     try {
@@ -80,6 +103,10 @@ export default function DashboardPage() {
       }
     }
   };
+
+  if (!isAuthorized) {
+    return <div className="text-center p-8">Verifying access...</div>;
+  }
 
   if (loading)
     return <div className="text-center p-8">Loading dashboard...</div>;
