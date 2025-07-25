@@ -1,5 +1,5 @@
 "use client";
-import { Bookmark, Github, X } from "lucide-react";
+import { Bookmark, Codesandbox, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import JobApplyForm from "./JobApplyForm";
@@ -16,8 +16,8 @@ export default function Job({ job }) {
     <>
       <div className="border bg-gray-50 p-5 rounded-lg shadow-md flex flex-col justify-between">
         <div className="flex justify-between items-start">
-          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
-            <Github />
+          <div className="w-12 h-12 bg-gray-200 mb-2 rounded-full flex items-center justify-center">
+            <Codesandbox />
           </div>
           <button>
             <Bookmark />
@@ -53,13 +53,13 @@ export default function Job({ job }) {
         </div>
         <div className="flex space-x-4 mt-3.5">
           <button
-            className="w-full border border-gray-400 text-gray-800 py-2 rounded-lg"
+            className="w-full border border-gray-400 text-gray-800 py-2 rounded-lg transform transition-transform duration-200 hover:scale-110"
             onClick={() => router.push(`/jobs/${job._id}`)}
           >
             Details
           </button>
           <button
-            className="w-full bg-black text-white py-2 rounded-lg"
+            className="w-full bg-black text-white py-2 rounded-lg transform transition-transform duration-200 hover:scale-110"
             onClick={() => setShowModal(true)}
           >
             Quick Apply
