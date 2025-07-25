@@ -20,7 +20,7 @@ export default function Header() {
             Jobseeker
           </h1>
         </div>
-        <div className="hidden md:flex items-center space-x-8 font-semibold">
+        <div className="md:flex items-center space-x-8 font-semibold">
           {pathname.includes("dashboard") ? (
             <button
               className="border rounded-lg px-6 py-2 bg-white shadow-lg"

@@ -2,12 +2,13 @@
 import { useEffect, useState } from "react";
 import api from "../lib/api";
 import Job from "./Job";
+import Loader from "./Loader";
 
 export default function JobLists() {
   const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const [loading, setLoading] = useState(true);
+  const [countdown, setCountdown] = useState(30);
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -24,7 +25,14 @@ export default function JobLists() {
   }, []);
 
   if (loading) {
-    return <div className="text-center p-8">Loading jobs...</div>;
+    return (
+      <Loader
+        countdown={countdown}
+        setCountdown={setCountdown}
+        loading={loading}
+        setLoading={setLoading}
+      />
+    );
   }
 
   if (error) {
